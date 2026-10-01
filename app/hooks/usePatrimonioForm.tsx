@@ -15,35 +15,15 @@ export function usePatrimonioForm() {
     const [rfid, setRfid] = useState('');
     const [status, setStatus] = useState('');
     const [foto, setFoto] = useState('');
-    const [salas, setSalas] = useState<any[]>([]);
     const [editandoId, setEditandoId] = useState<number | null>(null);
     const [carregando, setCarregando] = useState(false);
     const [salvando, setSalvando] = useState(false);
 
     useEffect(() => {
-        buscarSalas();
-
         if (idParam) {
             buscarPatrimonioPorId(Number(idParam));
         }
     }, [idParam]);
-
-    const buscarSalas = async () => {
-        try {
-            const resposta = await api.get('/sala');
-
-            setSalas(resposta.data);
-        } catch (error: any) {
-            Swal.fire({
-                title: 'Erro!',
-                text: 'Erro ao buscar as salas.',
-                icon: 'error',
-                confirmButtonColor: '#ca0101',
-                color: '#e6e6e6',
-                background: "#211d1d",
-            });
-        }
-    };
 
     const buscarPatrimonioPorId = async (id: number) => {
         setCarregando(true);
@@ -69,7 +49,7 @@ export function usePatrimonioForm() {
                 background: "#211d1d",
             });
 
-            router.push('/dashboardadmin');
+            router.push('/dashboardadmin/patrimonio');
 
         } finally {
             setCarregando(false);
@@ -111,14 +91,16 @@ export function usePatrimonioForm() {
 
             await Swal.fire({
                 title: 'Sucesso!',
-                text: 'Patrimônio salvo com sucesso!',
+                text: editandoId
+                    ? 'Patrimônio atualizado com sucesso!'
+                    : 'Patrimônio cadastrado com sucesso!',
                 icon: 'success',
                 confirmButtonColor: '#ca0101',
                 color: '#e6e6e6',
                 background: "#211d1d",
             });
 
-            router.push('/dashboardadmin');
+            router.push('/dashboardadmin/patrimonio');
 
         } catch (error: any) {
             Swal.fire({
@@ -136,7 +118,7 @@ export function usePatrimonioForm() {
     };
 
     const cancelar = () => {
-        router.push('/dashboardadmin');
+        router.push('/dashboardadmin/patrimonio');
     };
 
     return {
@@ -150,7 +132,6 @@ export function usePatrimonioForm() {
         setStatus,
         foto,
         setFoto,
-        salas,
         editandoId,
         carregando,
         salvando,

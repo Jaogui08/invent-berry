@@ -9,7 +9,12 @@ export async function GET(req, { params }) {
         const { id } = await params;
         const usuario = await service.buscarPorId(id);
 
-        return NextResponse.json(usuario, { status: 200 });
+        return NextResponse.json({
+            id: usuario.id,
+            nome: usuario.nome,
+            email: usuario.email,
+            tipo: usuario.tipo
+        }, { status: 200 });
     } catch (e) {
         return NextResponse.json({ erro: e.message }, { status: 404 });
     }
@@ -20,7 +25,7 @@ export async function PUT(req, { params }) {
         const { id } = await params;
         const body = await req.json();
 
-        const res = await service.atualizar(
+        const usuario = await service.atualizar(
             id,
             body.nome,
             body.email,
@@ -28,7 +33,12 @@ export async function PUT(req, { params }) {
             body.tipo
         );
 
-        return NextResponse.json(res, { status: 200 });
+        return NextResponse.json({
+            id: usuario.id,
+            nome: usuario.nome,
+            email: usuario.email,
+            tipo: usuario.tipo
+        }, { status: 200 });
     } catch (e) {
         return NextResponse.json({ erro: e.message }, { status: 400 });
     }
@@ -38,9 +48,14 @@ export async function DELETE(req, { params }) {
     try {
         const { id } = await params;
 
-        const res = await service.excluir(id);
+        const usuario = await service.excluir(id);
 
-        return NextResponse.json(res, { status: 200 });
+        return NextResponse.json({
+            id: usuario.id,
+            nome: usuario.nome,
+            email: usuario.email,
+            tipo: usuario.tipo
+        }, { status: 200 });
     } catch (e) {
         return NextResponse.json({ erro: e.message }, { status: 400 });
     }

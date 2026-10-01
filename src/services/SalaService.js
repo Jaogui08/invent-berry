@@ -9,6 +9,20 @@ export class SalaService {
         if (!nome || nome.length < 2)
             throw new Error("O nome deve ter no mínimo 2 caracteres");
 
+        if (leitorId) {
+
+            const leitorExistente =
+                await this.repository.buscarPorLeitorId(
+                    leitorId
+                );
+
+            if (leitorExistente) {
+                throw new Error(
+                    "Este leitor já está associado a outra sala."
+                );
+            }
+        }
+
         return await this.repository.salvar(
             new Sala(nome, leitorId)
         );
@@ -33,6 +47,20 @@ export class SalaService {
 
         if (!nome)
             throw new Error("O nome da sala é obrigatório");
+
+        const leitorExistente =
+            await this.repository.buscarPorLeitorId(
+                leitorId
+            );
+
+        if (
+            leitorExistente &&
+            Number(leitorExistente.id) !== Number(id)
+        ) {
+            throw new Error(
+                "Este leitor já está associado a outra sala."
+            );
+        }
 
         await this.buscarPorId(id);
 

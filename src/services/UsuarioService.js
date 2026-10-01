@@ -15,6 +15,15 @@ export class UsuarioService {
         if (!senha || senha.length < 6)
             throw new Error("A senha deve ter no mínimo 6 caracteres");
 
+        const usuarioExistente =
+            await this.repository.buscarPorEmail(email);
+
+        if (usuarioExistente) {
+            throw new Error(
+                "Já existe um usuário cadastrado com este e-mail."
+            );
+        }
+
         let tipo = "usuario";
 
         const dominioEmail = email.split("@")[1];
@@ -52,6 +61,18 @@ export class UsuarioService {
 
         if (!nome || !email || !senha || !tipo)
             throw new Error("Nome, email, senha e tipo são obrigatórios");
+
+        const usuarioEmail =
+            await this.repository.buscarPorEmail(email);
+
+        if (
+            usuarioEmail &&
+            Number(usuarioEmail.id) !== Number(id)
+        ) {
+            throw new Error(
+                "Já existe outro usuário cadastrado com este e-mail."
+            );
+        }
 
         await this.buscarPorId(id);
 

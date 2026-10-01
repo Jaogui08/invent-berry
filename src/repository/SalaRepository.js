@@ -53,4 +53,24 @@ export class SalaRepository {
             where: { id: Number(id) }
         });
     }
+
+    async buscarPorLeitorId(leitorId) {
+
+        if (!leitorId)
+            return null;
+
+        const dados = await prisma.sala.findUnique({
+            where: {
+                leitorId: leitorId
+            }
+        });
+
+        if (!dados) return null;
+
+        return new Sala(
+            dados.nome,
+            dados.leitorId,
+            dados.id
+        );
+    }
 }

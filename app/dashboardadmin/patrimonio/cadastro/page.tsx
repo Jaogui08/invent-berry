@@ -17,11 +17,26 @@ export default function CadastroPatrimonio() {
         setStatus,
         foto,
         setFoto,
-        salas,
+        editandoId,
+        carregando,
         salvar,
         cancelar,
         salvando
     } = usePatrimonioForm();
+
+    if (carregando) {
+        return (
+            <main className="cadastro-page">
+
+                <NavbarAdmin />
+
+                <section className="form-container">
+                    <p>Carregando patrimônio...</p>
+                </section>
+
+            </main>
+        );
+    }
 
     return (
         <main className="cadastro-page">
@@ -29,7 +44,12 @@ export default function CadastroPatrimonio() {
             <NavbarAdmin />
 
             <section className="form-container">
-                <h1>Cadastrar Patrimônio</h1>
+                <h1>
+                    {editandoId
+                        ? "Editar patrimônio"
+                        : "Cadastrar patrimônio"
+                    }
+                </h1>
                 <form onSubmit={salvar}>
                     <div className="campo">
                         <label>Nome do patrimônio</label>
@@ -120,7 +140,12 @@ export default function CadastroPatrimonio() {
                             className="btn-salvar"
                             disabled={salvando}
                         >
-                            {salvando ? 'Salvando...' : 'Salvar'}
+                            {salvando
+                                ? 'Salvando...'
+                                : editandoId
+                                    ? 'Atualizar'
+                                    : 'Cadastrar'
+                            }
                         </button>
 
                     </div>

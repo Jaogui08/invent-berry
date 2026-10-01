@@ -15,6 +15,29 @@ export class PatrimonioService {
         if (!status)
             throw new Error("O status do patrimônio é obrigatório");
 
+        const patrimonioNumero =
+            await this.repository.buscarPorNumeroPatrimonio(
+                numeroPatrimonio
+            );
+
+        if (patrimonioNumero) {
+            throw new Error(
+                "Já existe um patrimônio com este número."
+            );
+        }
+
+        if (rfid) {
+
+            const patrimonioRfid =
+                await this.repository.buscarPorRfid(rfid);
+
+            if (patrimonioRfid) {
+                throw new Error(
+                    "Este RFID já está cadastrado em outro patrimônio."
+                );
+            }
+        }
+
         return await this.repository.salvar(
             new Patrimonio(
                 nome,
@@ -48,6 +71,36 @@ export class PatrimonioService {
             throw new Error("Nome, número do patrimônio e status são obrigatórios");
 
         const patrimonioAtual = await this.buscarPorId(id);
+
+        const patrimonioNumero =
+            await this.repository.buscarPorNumeroPatrimonio(
+                numeroPatrimonio
+            );
+
+        if (
+            patrimonioNumero &&
+            Number(patrimonioNumero.id) !== Number(id)
+        ) {
+            throw new Error(
+                "Já existe outro patrimônio com este número."
+            );
+        }
+
+        if (rfid) {
+
+            const patrimonioRfid =
+                await this.repository.buscarPorRfid(rfid);
+
+            if (
+                patrimonioRfid &&
+                Number(patrimonioRfid.id) !== Number(id)
+            ) {
+                throw new Error(
+                    "Este RFID já está cadastrado em outro patrimônio."
+                );
+            }
+
+        }
 
         const patrimonioAtualizado = new Patrimonio(
             nome,

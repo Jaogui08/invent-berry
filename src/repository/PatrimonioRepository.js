@@ -95,4 +95,50 @@ export class PatrimonioRepository {
             }
         });
     }
+
+    async buscarPorNumeroPatrimonio(numeroPatrimonio) {
+
+        const dados = await prisma.patrimonio.findUnique({
+            where: {
+                numeroPatrimonio: numeroPatrimonio
+            }
+        });
+
+        if (!dados) return null;
+
+        return new Patrimonio(
+            dados.nome,
+            dados.numeroPatrimonio,
+            dados.status,
+            dados.rfid,
+            dados.salaId,
+            dados.foto,
+            dados.id
+        );
+    }
+
+
+    async buscarPorRfid(rfid) {
+
+        if (!rfid)
+            return null;
+
+        const dados = await prisma.patrimonio.findUnique({
+            where: {
+                rfid: rfid
+            }
+        });
+
+        if (!dados) return null;
+
+        return new Patrimonio(
+            dados.nome,
+            dados.numeroPatrimonio,
+            dados.status,
+            dados.rfid,
+            dados.salaId,
+            dados.foto,
+            dados.id
+        );
+    }
 }
