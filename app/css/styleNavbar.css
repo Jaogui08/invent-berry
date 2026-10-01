@@ -1,0 +1,25 @@
+nav{
+    border-bottom: 1px #ff0000 solid;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    padding-inline: 40px;
+    height: 90px;
+}
+
+.imagem img{
+    width: 120px;
+    border-radius: 5px;
+}
+
+.acoes{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 25px;
+    font-weight: bold;
+}
+.acoes button{
+    cursor: pointer;
+}

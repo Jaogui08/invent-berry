@@ -1,0 +1,90 @@
+.cadastro-page {
+    min-height: 100vh;
+    background-color: #000000;
+    color: white;
+}
+
+.form-container {
+    width: 90%;
+    max-width: 700px;
+    margin: 50px auto;
+    padding: 35px;
+    background-color: rgba(20, 20, 20, 0.95);
+    border: 1px solid #ca0101;
+    border-radius: 10px;
+}
+
+.form-container h1 {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.campo {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.campo label {
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.campo input {
+    padding: 12px;
+    border: 1px solid #555;
+    border-radius: 5px;
+    background-color: #111;
+    color: white;
+    outline: none;
+}
+
+.campo input:focus {
+    border-color: #ca0101;
+}
+
+.campo select {
+    padding: 12px;
+    border: 1px solid #555;
+    border-radius: 5px;
+    background-color: #111;
+    color: white;
+    outline: none;
+}
+
+.campo select:focus {
+    border-color: #ca0101;
+}
+
+.botoes {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.botoes button {
+    padding: 11px 25px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.btn-cancelar {
+    background-color: #555;
+    color: white;
+}
+
+.btn-salvar {
+    background-color: #ca0101;
+    color: white;
+}
+
+.btn-salvar:hover {
+    background-color: #a00000;
+}
+
+.btn-cancelar:hover {
+    background-color: #444;
+}

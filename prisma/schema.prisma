@@ -1,0 +1,51 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "mysql"
+    url = env("DATABASE_URL")
+}
+
+model usuario {
+    id Int @id@default(autoincrement())
+    nome String @db.VarChar(255)
+    email String @unique @db.VarChar(255)
+    senha String @db.VarChar(255)
+    tipo String @db.VarChar(50)
+}
+
+model sala {
+    id Int @id@default(autoincrement())
+    nome String @db.VarChar(255)
+    leitorId String? @unique @db.VarChar(255)
+
+    patrimonios patrimonio[]
+    movimentacoes movimentacao[]
+}
+
+model patrimonio {
+    id Int @id@default(autoincrement())
+    nome String @db.VarChar(255)
+    numeroPatrimonio String @unique @db.VarChar(255)
+    rfid String? @unique @db.VarChar(255)
+    status String @db.VarChar(100)
+    foto String? @db.VarChar(500)
+
+    salaId Int?
+    sala sala? @relation(fields: [salaId], references: [id])
+
+    movimentacoes movimentacao[]
+}
+
+model movimentacao {
+    id Int @id@default(autoincrement())
+    tipo String @db.VarChar(50)
+    dataHora DateTime @default(now())
+
+    patrimonioId Int
+    patrimonio patrimonio @relation(fields: [patrimonioId], references: [id])
+
+    salaId Int
+    sala sala @relation(fields: [salaId], references: [id])
+}
