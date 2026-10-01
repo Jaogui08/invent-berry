@@ -80,4 +80,19 @@ export class PatrimonioRepository {
 
         return quantidade > 0;
     }
+
+    async atualizarSala(id, salaId) {
+
+        return await prisma.patrimonio.update({
+            where: {
+                id: Number(id)
+            },
+
+            data: {
+                salaId: salaId !== null
+                    ? Number(salaId)
+                    : null
+            }
+        });
+    }
 }
