@@ -25,25 +25,29 @@
     font-size: 30px;
 }
 
-.campo {
+.login-box .campo {
     display: flex;
     flex-direction: column;
     margin-bottom: 18px;
 }
 
-.campo label {
+.login-box .campo label {
     color: white;
     font-size: 15px;
     margin-bottom: 5px;
 }
 
-.campo input {
+.login-box .campo input {
     height: 30px;
     border: none;
     border-radius: 5px;
     padding: 5px 10px;
     outline: none;
     background-color: #ffffff;
+}
+
+.login-box .campo input::placeholder {
+    color: #777777;
 }
 
 .link h1 {

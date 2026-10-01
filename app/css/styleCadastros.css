@@ -19,18 +19,18 @@
     margin-bottom: 30px;
 }
 
-.campo {
+.form-container .campo {
     display: flex;
     flex-direction: column;
     margin-bottom: 20px;
 }
 
-.campo label {
+.form-container .campo label {
     margin-bottom: 8px;
     font-weight: bold;
 }
 
-.campo input {
+.form-container .campo input {
     padding: 12px;
     border: 1px solid #555;
     border-radius: 5px;
@@ -39,11 +39,11 @@
     outline: none;
 }
 
-.campo input:focus {
+.form-container .campo input:focus {
     border-color: #ca0101;
 }
 
-.campo select {
+.form-container .campo select {
     padding: 12px;
     border: 1px solid #555;
     border-radius: 5px;
@@ -52,7 +52,7 @@
     outline: none;
 }
 
-.campo select:focus {
+.form-container .campo select:focus {
     border-color: #ca0101;
 }
 

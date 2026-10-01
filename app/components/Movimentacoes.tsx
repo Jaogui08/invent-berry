@@ -118,7 +118,7 @@ export default function Movimentacoes() {
                 </p>
             )}
 
-            {totalPaginas > 1 && (
+            {totalPaginas >= 1 && (
 
                 <div className="paginacao">
 
