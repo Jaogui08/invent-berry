@@ -1,0 +1,99 @@
+.perfil-page {
+    min-height: 100vh;
+    background-color: #000000;
+    color: white;
+}
+
+.perfil-area {
+    display: flex;
+    justify-content: center;
+    padding: 50px 20px;
+}
+
+.perfil-container {
+    width: 90%;
+    max-width: 600px;
+    padding: 35px;
+    background-color: rgba(20, 20, 20, 0.95);
+    border: 1px solid #ca0101;
+    border-radius: 10px;
+}
+
+.perfil-container h1 {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.perfil-campo {
+    display: flex;
+    flex-direction: column;
+
+    margin-bottom: 20px;
+}
+
+.perfil-campo label {
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.perfil-campo input {
+    min-height: 44px;
+
+    padding: 12px;
+
+    border: 1px solid #555;
+    border-radius: 5px;
+
+    background-color: #111;
+    color: white;
+
+    outline: none;
+}
+
+.perfil-campo input:focus {
+    border-color: #ca0101;
+}
+
+.perfil-campo input:disabled {
+    background-color: #292929;
+    color: #999;
+
+    cursor: not-allowed;
+}
+
+.perfil-container button {
+    width: 100%;
+
+    padding: 12px;
+
+    margin-top: 10px;
+
+    border: none;
+    border-radius: 5px;
+
+    background-color: #ca0101;
+    color: white;
+
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+.perfil-container button:hover {
+    background-color: #a00000;
+}
+
+.perfil-container button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.perfil-carregando {
+    font-size: 18px;
+}
+
+.senha-erro {
+    margin-top: 6px;
+    color: #ff4d4d;
+    font-size: 13px;
+}

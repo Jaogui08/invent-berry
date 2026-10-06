@@ -36,6 +36,7 @@ export default function NavBar() {
             </div>
             <div className="acoes">
                 <Link href="/dashboard">Movimentações</Link>
+                <Link href="/perfil">Perfil</Link>
                 <button onClick={sair}>Sair</button>
             </div>
         </nav>

@@ -87,6 +87,40 @@ export class UsuarioService {
         return await this.repository.atualizar(id, usuarioAtualizado);
     }
 
+    async atualizarPerfil(id, nome, novaSenha) {
+        if (!id)
+            throw new Error("ID é obrigatório para atualização");
+
+        if (!nome || nome.length < 2)
+            throw new Error("O nome deve ter no mínimo 2 caracteres");
+
+        const usuarioAtual = await this.buscarPorId(id);
+
+        let senha = usuarioAtual.senha;
+
+        if (novaSenha) {
+            if (novaSenha.length < 6)
+                throw new Error(
+                    "A senha deve ter no mínimo 6 caracteres"
+                );
+
+            senha = novaSenha;
+        }
+
+        const usuarioAtualizado = new Usuario(
+            nome,
+            usuarioAtual.email,
+            senha,
+            usuarioAtual.tipo,
+            id
+        );
+
+        return await this.repository.atualizar(
+            id,
+            usuarioAtualizado
+        );
+    }
+
     async excluir(id) {
         await this.buscarPorId(id);
 

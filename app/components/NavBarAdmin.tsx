@@ -40,6 +40,7 @@ export default function NavBarAdmin() {
                 <Link href="/dashboardadmin/movimentacao/cadastro">Cadastrar Movimentação</Link>
                 <Link href="/dashboardadmin">Movimentações</Link>
                 <Link href="/dashboardadmin/patrimonio">Patrimônios</Link>
+                <Link href="/perfil">Perfil</Link>
                 <button onClick={sair}>Sair</button>
             </div>
         </nav>
