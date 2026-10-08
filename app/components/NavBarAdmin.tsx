@@ -24,6 +24,7 @@ export default function NavBarAdmin() {
         }).then((result) => {
             if (result.isConfirmed) {
                 localStorage.removeItem("usuario");
+                localStorage.removeItem("sessaoExpira");
                 router.push("/");
             }
         });

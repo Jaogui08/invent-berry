@@ -2,8 +2,9 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { time } from 'console';
 
-export function useProtecaoRota(tipoPermitido: 'adm' | 'usuario') {
+export function useProtecaoRota(tipoPermitido: 'adm' | 'usuario'| 'qualquer') {
     const router = useRouter();
 
     const [carregando, setCarregando] = useState(true);
@@ -11,7 +12,12 @@ export function useProtecaoRota(tipoPermitido: 'adm' | 'usuario') {
     useEffect(() => {
         const usuarioSalvo = localStorage.getItem('usuario');
 
-        if (!usuarioSalvo) {
+        const sessaoExpira = localStorage.getItem('sessaoExpira');
+
+        if (!usuarioSalvo || !sessaoExpira) {
+            localStorage.removeItem('usuario');
+            localStorage.removeItem('sessaoExpira');
+
             router.replace('/');
             return;
         }
@@ -19,8 +25,22 @@ export function useProtecaoRota(tipoPermitido: 'adm' | 'usuario') {
 
             const usuario = JSON.parse(usuarioSalvo);
 
+            const expiracao = Number(sessaoExpira);
+
+            const dateNow = Date.now();
+
+            if (!expiracao || dateNow >= expiracao) {
+                localStorage.removeItem('usuario');
+                localStorage.removeItem('sessaoExpira');
+
+                router.replace('/');
+                return;
+            }
+
             if (!usuario.tipo) {
                 localStorage.removeItem('usuario');
+                localStorage.removeItem('sessaoExpira');
+
                 router.replace('/');
                 return;
             }
@@ -43,8 +63,20 @@ export function useProtecaoRota(tipoPermitido: 'adm' | 'usuario') {
 
             setCarregando(false);
 
+            const tempoRestante = expiracao - dateNow;
+            const timer = setTimeout(() => {
+                localStorage.removeItem('usuario');
+                localStorage.removeItem('sessaoExpira');
+
+                router.replace('/');
+            }, tempoRestante);
+
+            return () => clearTimeout(timer);
+
         } catch {
             localStorage.removeItem('usuario');
+            localStorage.removeItem('sessaoExpira');
+            
             router.replace('/');
         }
 

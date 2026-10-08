@@ -1,11 +1,13 @@
 'use client';
 
 import { usePerfil } from '@/app/hooks/usePerfil';
+import { useProtecaoRota } from '../hooks/useProtecaoRota';
 import NavBar from '../components/NavBar';
 import NavBarAdmin from '../components/NavBarAdmin';
 import '../css/stylePerfil.css';
 
 export default function Perfil() {
+    const {carregando: verificandoSessao} = useProtecaoRota('qualquer');
 
     const {
         nome,
@@ -23,7 +25,7 @@ export default function Perfil() {
         salvar
     } = usePerfil();
 
-    if (carregando) {
+    if (verificandoSessao || carregando) {
         return (
             <div className="perfil-page">
                 <p className="perfil-carregando">

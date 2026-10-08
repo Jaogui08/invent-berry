@@ -36,7 +36,13 @@ export function useLogin() {
 
             const usuario = resposta.data;
 
+            const tempoSessao = 20 * 60 * 60 * 1000;
+
+            const expira = Date.now() + tempoSessao;
+
             localStorage.setItem('usuario', JSON.stringify(usuario));
+
+            localStorage.setItem('sessaoExpira', String(expira));
 
             if (usuario.tipo === 'adm') {
                 router.push('/dashboardadmin');
