@@ -89,6 +89,59 @@ export function usePatrimonios() {
 
         } catch (error: any) {
 
+            const possuiMovimentacoes = error.response?.data?.possuiMovimentacoes;
+
+            if (possuiMovimentacoes) {
+                const confirmarExclusao = await Swal.fire({
+                    title: "Excluir mesmo assim?",
+                    text:
+                        "Este patrimônio possui movimentações registradas. " +
+                        "Ao continuar, todas as movimentações relacionadas " +
+                        "a ele também serão excluídas permanentemente.",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonText: "Excluir mesmo assim",
+                    cancelButtonText: "Cancelar",
+                    confirmButtonColor: "#ca0101",
+                    cancelButtonColor: "#6b7280",
+                    color: "#e6e6e6",
+                    background: "#211d1d",
+                    reverseButtons: true,
+                });
+
+                if (!confirmarExclusao.isConfirmed) {
+                    return;
+                }
+
+                try {
+                    await api.delete(
+                        `/patrimonio/${id}?forcar=true`
+                    );
+
+                    await Swal.fire({
+                        title: "Excluído!",
+                        text: "O patrimônio e suas movimentações foram excluídos.",
+                        icon: "success",
+                        confirmButtonColor: "#ca0101",
+                        color: "#e6e6e6",
+                        background: "#211d1d",
+                    });
+
+                    listarPatrimonios();
+                } catch (error: any) {
+                    Swal.fire({
+                        title: "Erro!",
+                        text: error.response?.data?.erro || "Erro ao excluir o patrimônio",
+                        icon: "error",
+                        confirmButtonColor: "#ca0101",
+                        color: "#e6e6e6",
+                        background: "#211d1d",
+                    });
+                }
+
+                return;
+            }
+
             Swal.fire({
                 title: 'Erro!',
                 text:
@@ -99,9 +152,7 @@ export function usePatrimonios() {
                 color: '#e6e6e6',
                 background: "#211d1d",
             });
-
         }
-
     };
 
     return {

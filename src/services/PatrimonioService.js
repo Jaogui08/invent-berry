@@ -115,15 +115,24 @@ export class PatrimonioService {
         return await this.repository.atualizar(id, patrimonioAtualizado);
     }
 
-    async excluir(id) {
+    async excluir(id, forcar = false) {
+        await this.buscarPorId(id);
 
         const possuiMovimentacoes =
             await this.repository.movimentacoes(id);
 
-        if (possuiMovimentacoes) {
-            throw new Error(
-                "Não é possível excluir este patrimônio, pois ele possui movimentações registradas."
+        if (possuiMovimentacoes && !forcar) {
+            const erro = new Error(
+                "Este patrimõnio possui movimentações registradas."
             );
+
+            erro.possuiMovimentacoes = true;
+
+            throw erro;
+        }
+
+        if (possuiMovimentacoes && forcar) {
+            return await this.repository.excluirComMovimentacoes(id);
         }
 
         return await this.repository.excluir(id);

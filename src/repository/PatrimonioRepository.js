@@ -70,6 +70,23 @@ export class PatrimonioRepository {
         });
     }
 
+    async excluirComMovimentacoes(id) {
+        return await prisma.$transaction(async (tx) => {
+
+            await tx.movimentacao.deleteMany({
+                where: {
+                    patrimonioId: Number(id)
+                }
+            });
+
+            return await tx.patrimonio.delete({
+                where: {
+                    id: Number(id)
+                }
+            });
+        });
+    }
+
     async movimentacoes(id) {
 
         const quantidade = await prisma.movimentacao.count({

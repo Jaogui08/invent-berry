@@ -108,6 +108,10 @@ export default function CadastroPatrimonio() {
                                 Em manutenção
                             </option>
 
+                            <option value="DESCARTADO">
+                                Descartado
+                            </option>
+
                         </select>
 
                     </div>

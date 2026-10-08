@@ -38,11 +38,18 @@ export async function PUT(req, { params }) {
 export async function DELETE(req, { params }) {
     try {
         const { id } = await params;
+        const { searchParams } = new URL(req.url);
 
-        const res = await service.excluir(id);
+        const forcar = searchParams.get("forcar") === "true";
+
+        const res = await service.excluir(id, forcar);
 
         return NextResponse.json(res, { status: 200 });
     } catch (e) {
+        if (e.possuiMovimentacoes) {
+            return NextResponse.json({ erro: e.message, possuiMovimentacoes: true }, { status: 409 });
+        }
+
         return NextResponse.json({ erro: e.message }, { status: 400 });
     }
 }
