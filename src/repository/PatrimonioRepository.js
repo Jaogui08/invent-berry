@@ -8,7 +8,6 @@ export class PatrimonioRepository {
             data: {
                 nome: obj.nome,
                 numeroPatrimonio: obj.numeroPatrimonio,
-                rfid: obj.rfid,
                 salaId: obj.salaId,
                 status: obj.status,
                 foto: obj.foto
@@ -24,7 +23,6 @@ export class PatrimonioRepository {
                 d.nome,
                 d.numeroPatrimonio,
                 d.status,
-                d.rfid,
                 d.salaId,
                 d.foto,
                 d.id
@@ -43,7 +41,6 @@ export class PatrimonioRepository {
             dados.nome,
             dados.numeroPatrimonio,
             dados.status,
-            dados.rfid,
             dados.salaId,
             dados.foto,
             dados.id
@@ -56,7 +53,6 @@ export class PatrimonioRepository {
             data: {
                 nome: obj.nome,
                 numeroPatrimonio: obj.numeroPatrimonio,
-                rfid: obj.rfid,
                 salaId: obj.salaId,
                 status: obj.status,
                 foto: obj.foto
@@ -127,32 +123,6 @@ export class PatrimonioRepository {
             dados.nome,
             dados.numeroPatrimonio,
             dados.status,
-            dados.rfid,
-            dados.salaId,
-            dados.foto,
-            dados.id
-        );
-    }
-
-
-    async buscarPorRfid(rfid) {
-
-        if (!rfid)
-            return null;
-
-        const dados = await prisma.patrimonio.findUnique({
-            where: {
-                rfid: rfid
-            }
-        });
-
-        if (!dados) return null;
-
-        return new Patrimonio(
-            dados.nome,
-            dados.numeroPatrimonio,
-            dados.status,
-            dados.rfid,
             dados.salaId,
             dados.foto,
             dados.id

@@ -11,8 +11,6 @@ export default function CadastroPatrimonio() {
         setNome,
         numeroPatrimonio,
         setNumeroPatrimonio,
-        rfid,
-        setRfid,
         status,
         setStatus,
         foto,
@@ -70,17 +68,6 @@ export default function CadastroPatrimonio() {
                             value={numeroPatrimonio}
                             onChange={(e) => setNumeroPatrimonio(e.target.value)}
                             placeholder="Digite o número do patrimônio"
-                        />
-                    </div>
-
-                    <div className="campo">
-                        <label>RFID</label>
-
-                        <input
-                            type="text"
-                            value={rfid}
-                            onChange={(e) => setRfid(e.target.value)}
-                            placeholder="Digite o código RFID"
                         />
                     </div>
 

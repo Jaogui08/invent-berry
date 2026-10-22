@@ -25,7 +25,6 @@ export async function PUT(req, { params }) {
             body.nome,
             body.numeroPatrimonio,
             body.status,
-            body.rfid,
             body.foto
         );
 

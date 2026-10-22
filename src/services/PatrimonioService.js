@@ -5,7 +5,7 @@ export class PatrimonioService {
         this.repository = repository;
     }
 
-    async cadastrar(nome, numeroPatrimonio, status, rfid, foto) {
+    async cadastrar(nome, numeroPatrimonio, status, foto) {
         if (!nome || nome.length < 2)
             throw new Error("O nome deve ter no mínimo 2 caracteres");
 
@@ -26,24 +26,11 @@ export class PatrimonioService {
             );
         }
 
-        if (rfid) {
-
-            const patrimonioRfid =
-                await this.repository.buscarPorRfid(rfid);
-
-            if (patrimonioRfid) {
-                throw new Error(
-                    "Este RFID já está cadastrado em outro patrimônio."
-                );
-            }
-        }
-
         return await this.repository.salvar(
             new Patrimonio(
                 nome,
                 numeroPatrimonio,
                 status,
-                rfid,
                 null,
                 foto
             )
@@ -63,7 +50,7 @@ export class PatrimonioService {
         return patrimonio;
     }
 
-    async atualizar(id, nome, numeroPatrimonio, status, rfid, foto) {
+    async atualizar(id, nome, numeroPatrimonio, status, foto) {
         if (!id)
             throw new Error("ID é obrigatório para atualização");
 
@@ -86,27 +73,10 @@ export class PatrimonioService {
             );
         }
 
-        if (rfid) {
-
-            const patrimonioRfid =
-                await this.repository.buscarPorRfid(rfid);
-
-            if (
-                patrimonioRfid &&
-                Number(patrimonioRfid.id) !== Number(id)
-            ) {
-                throw new Error(
-                    "Este RFID já está cadastrado em outro patrimônio."
-                );
-            }
-
-        }
-
         const patrimonioAtualizado = new Patrimonio(
             nome,
             numeroPatrimonio,
             status,
-            rfid,
             patrimonioAtual.salaId,
             foto,
             id

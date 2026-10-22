@@ -12,7 +12,6 @@ export function usePatrimonioForm() {
 
     const [nome, setNome] = useState('');
     const [numeroPatrimonio, setNumeroPatrimonio] = useState('');
-    const [rfid, setRfid] = useState('');
     const [status, setStatus] = useState('');
     const [foto, setFoto] = useState('');
     const [editandoId, setEditandoId] = useState<number | null>(null);
@@ -35,7 +34,6 @@ export function usePatrimonioForm() {
             setEditandoId(patrimonio.id);
             setNome(patrimonio.nome);
             setNumeroPatrimonio(patrimonio.numeroPatrimonio);
-            setRfid(patrimonio.rfid || '');
             setStatus(patrimonio.status);
             setFoto(patrimonio.foto || '');
 
@@ -78,7 +76,6 @@ export function usePatrimonioForm() {
             const dados = {
                 nome,
                 numeroPatrimonio,
-                rfid: rfid || null,
                 status,
                 foto: foto || null
             };
@@ -126,8 +123,6 @@ export function usePatrimonioForm() {
         setNome,
         numeroPatrimonio,
         setNumeroPatrimonio,
-        rfid,
-        setRfid,
         status,
         setStatus,
         foto,

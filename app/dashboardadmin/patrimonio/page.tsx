@@ -66,7 +66,6 @@ export default function PatrimoniosAdmin() {
                                 <div>Imagem</div>
                                 <div>Nome</div>
                                 <div>Nº Patrimônio</div>
-                                <div>RFID</div>
                                 <div>Status</div>
                                 <div>Ações</div>
 
@@ -102,10 +101,6 @@ export default function PatrimoniosAdmin() {
 
                                     <div>
                                         {patrimonio.numeroPatrimonio}
-                                    </div>
-
-                                    <div>
-                                        {patrimonio.rfid || 'Sem RFID'}
                                     </div>
 
                                     <div>

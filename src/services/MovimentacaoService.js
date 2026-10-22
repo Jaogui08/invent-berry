@@ -94,6 +94,66 @@ export class MovimentacaoService {
         }
     }
 
+    async registrarLeitura(numeroPatrimonio, leitorId) {
+
+        if (!numeroPatrimonio)
+            throw new Error(
+                "Número do patrimônio não informado"
+            );
+
+        if (!leitorId)
+            throw new Error(
+                "Leitor não informado"
+            );
+
+        const patrimonio =
+            await this.patrimonioRepository
+                .buscarPorNumeroPatrimonio(
+                    numeroPatrimonio
+                );
+
+        if (!patrimonio)
+            throw new Error(
+                "Patrimônio não encontrado"
+            );
+
+        const sala =
+            await this.salaRepository
+                .buscarPorLeitorId(
+                    leitorId
+                );
+
+        if (!sala)
+            throw new Error(
+                "Nenhuma sala está associada a este leitor"
+            );
+
+        if (patrimonio.salaId === null) {
+
+            return await this.cadastrar(
+                "ENTRADA",
+                patrimonio.id,
+                sala.id
+            );
+        }
+
+        if (
+            Number(patrimonio.salaId) ===
+            Number(sala.id)
+        ) {
+
+            return await this.cadastrar(
+                "SAÍDA",
+                patrimonio.id,
+                sala.id
+            );
+        }
+
+        throw new Error(
+            "Este patrimônio está registrado em outra sala."
+        );
+    }
+
     async listar() {
         return await this.repository.listarTodos();
     }

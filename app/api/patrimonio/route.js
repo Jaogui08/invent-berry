@@ -21,7 +21,6 @@ export async function POST(req) {
             body.nome,
             body.numeroPatrimonio,
             body.status,
-            body.rfid,
             body.foto
         );
 
