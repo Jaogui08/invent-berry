@@ -3,6 +3,7 @@
 import NavbarAdmin from '@/app/components/NavBarAdmin';
 import { usePatrimonioForm } from '@/app/hooks/usePatrimonioForm';
 import '@/app/css/styleCadastros.css';
+import Swal from 'sweetalert2';
 
 export default function CadastroPatrimonio() {
 
@@ -21,6 +22,81 @@ export default function CadastroPatrimonio() {
         cancelar,
         salvando
     } = usePatrimonioForm();
+
+    const processarFoto = (arquivo: File) => {
+
+        const tiposPermitidos = [
+            'image/jpeg',
+            'image/png',
+            'image/webp'
+        ];
+
+        if (!tiposPermitidos.includes(arquivo.type)) {
+
+            Swal.fire({
+                title: 'Arquivo inválido!',
+                text: 'Selecione uma imagem JPG, PNG ou WEBP.',
+                icon: 'warning',
+                confirmButtonColor: '#ca0101',
+                color: '#e6e6e6',
+                background: '#211d1d'
+            });
+
+            return;
+        }
+
+        const tamanhoMaximo = 10 * 1024 * 1024;
+
+        if (arquivo.size > tamanhoMaximo) {
+
+            Swal.fire({
+                title: 'Imagem muito grande!',
+                text: 'A imagem deve ter no máximo 10 MB.',
+                icon: 'warning',
+                confirmButtonColor: '#ca0101',
+                color: '#e6e6e6',
+                background: '#211d1d'
+            });
+
+            return;
+        }
+
+        const leitor = new FileReader();
+
+        leitor.onload = () => {
+
+            if (typeof leitor.result === 'string') {
+                setFoto(leitor.result);
+            }
+
+        };
+
+        leitor.readAsDataURL(arquivo);
+    };
+
+    const selecionarFoto = (
+        e: React.ChangeEvent<HTMLInputElement>
+    ) => {
+
+        const arquivo = e.target.files?.[0];
+
+        if (arquivo) {
+            processarFoto(arquivo);
+        }
+    };
+
+    const soltarFoto = (
+        e: React.DragEvent<HTMLLabelElement>
+    ) => {
+
+        e.preventDefault();
+
+        const arquivo = e.dataTransfer.files?.[0];
+
+        if (arquivo) {
+            processarFoto(arquivo);
+        }
+    };
 
     if (carregando) {
         return (
@@ -42,77 +118,158 @@ export default function CadastroPatrimonio() {
             <NavbarAdmin />
 
             <section className="form-container">
+
                 <h1>
                     {editandoId
-                        ? "Editar patrimônio"
-                        : "Cadastrar patrimônio"
+                        ? 'Editar patrimônio'
+                        : 'Cadastrar patrimônio'
                     }
                 </h1>
+
                 <form onSubmit={salvar}>
+
                     <div className="campo">
-                        <label>Nome do patrimônio</label>
+
+                        <label>
+                            Nome do patrimônio
+                        </label>
 
                         <input
                             type="text"
                             value={nome}
-                            onChange={(e) => setNome(e.target.value)}
+                            onChange={(e) =>
+                                setNome(e.target.value)
+                            }
                             placeholder="Digite o nome do patrimônio"
                         />
+
                     </div>
 
                     <div className="campo">
-                        <label>Número do patrimônio</label>
+
+                        <label>
+                            Número do patrimônio
+                        </label>
 
                         <input
                             type="text"
                             value={numeroPatrimonio}
-                            onChange={(e) => setNumeroPatrimonio(e.target.value)}
+                            onChange={(e) =>
+                                setNumeroPatrimonio(
+                                    e.target.value
+                                )
+                            }
                             placeholder="Digite o número do patrimônio"
                         />
+
                     </div>
 
-                    <div className="campo">
-                        <label>Status</label>
+                    {editandoId && (
 
-                        <select
-                            value={status}
-                            onChange={(e) => setStatus(e.target.value)}
+                        <div className="campo">
+
+                            <label>Status</label>
+
+                            <select
+                                value={status}
+                                onChange={(e) =>
+                                    setStatus(e.target.value)
+                                }
+                            >
+
+                                <option value="" disabled>
+                                    Selecione o status
+                                </option>
+
+                                <option value="ATIVO">
+                                    Ativo
+                                </option>
+
+                                <option value="INATIVO">
+                                    Inativo
+                                </option>
+
+                                <option value="MANUTENÇÃO">
+                                    Em manutenção
+                                </option>
+
+                                <option value="DESCARTADO">
+                                    Descartado
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    )}
+
+                    <div className="campo">
+
+                        <label>
+                            Foto do patrimônio
+                        </label>
+
+                        <label
+                            htmlFor="foto-upload"
+                            className="foto-upload"
+                            onDragOver={(e) =>
+                                e.preventDefault()
+                            }
+                            onDrop={soltarFoto}
                         >
 
-                            <option value="" disabled>
-                                Selecione o status
-                            </option>
+                            {foto ? (
+                                <div className="foto-preview">
 
-                            <option value="ATIVO">
-                                Ativo
-                            </option>
+                                    <img
+                                        src={foto}
+                                        alt="Prévia do patrimônio"
+                                    />
 
-                            <option value="INATIVO">
-                                Inativo
-                            </option>
+                                    <p>
+                                        Clique ou arraste outra imagem
+                                        para substituir
+                                    </p>
 
-                            <option value="MANUTENÇÃO">
-                                Em manutenção
-                            </option>
+                                </div>
+                            ) : (
+                                <div className="foto-placeholder">
 
-                            <option value="DESCARTADO">
-                                Descartado
-                            </option>
+                                    <span>📷</span>
 
-                        </select>
+                                    <strong>
+                                        Clique para selecionar uma imagem
+                                    </strong>
 
-                    </div>
+                                    <p>
+                                        ou arraste o arquivo até aqui
+                                    </p>
 
-                    <div className="campo">
-                        <label>Foto</label>
+                                    <small>
+                                        JPG, PNG ou WEBP — máximo 10 MB
+                                    </small>
+
+                                </div>
+                            )}
+                        </label>
 
                         <input
-                            type="text"
-                            value={foto}
-                            onChange={(e) => setFoto(e.target.value)}
-                            placeholder="Digite o caminho ou URL da foto"
+                            id="foto-upload"
+                            type="file"
+                            accept="image/jpeg,image/png,image/webp"
+                            onChange={selecionarFoto}
+                            hidden
                         />
 
+                        {foto && (
+                            <button
+                                type="button"
+                                className="btn-remover-foto"
+                                onClick={() => setFoto('')}
+                            >
+                                Remover foto
+                            </button>
+                        )}
                     </div>
 
                     <div className="botoes">
@@ -124,7 +281,6 @@ export default function CadastroPatrimonio() {
                         >
                             Cancelar
                         </button>
-
 
                         <button
                             type="submit"
@@ -138,7 +294,6 @@ export default function CadastroPatrimonio() {
                                     : 'Cadastrar'
                             }
                         </button>
-
                     </div>
                 </form>
             </section>

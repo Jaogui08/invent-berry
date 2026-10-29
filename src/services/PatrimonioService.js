@@ -5,15 +5,12 @@ export class PatrimonioService {
         this.repository = repository;
     }
 
-    async cadastrar(nome, numeroPatrimonio, status, foto) {
+    async cadastrar(nome, numeroPatrimonio, foto) {
         if (!nome || nome.length < 2)
             throw new Error("O nome deve ter no mínimo 2 caracteres");
 
         if (!numeroPatrimonio)
             throw new Error("O número do patrimônio é obrigatório");
-
-        if (!status)
-            throw new Error("O status do patrimônio é obrigatório");
 
         const patrimonioNumero =
             await this.repository.buscarPorNumeroPatrimonio(
@@ -30,7 +27,7 @@ export class PatrimonioService {
             new Patrimonio(
                 nome,
                 numeroPatrimonio,
-                status,
+                "ATIVO",
                 null,
                 foto
             )

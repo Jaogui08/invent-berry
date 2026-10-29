@@ -88,3 +88,83 @@
 .btn-cancelar:hover {
     background-color: #444;
 }
+
+.foto-upload {
+    width: 100%;
+    min-height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px dashed #555;
+    border-radius: 8px;
+    background-color: #111;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.foto-upload:hover {
+    border-color: #ca0101;
+    background-color: #181818;
+}
+
+
+.foto-placeholder {
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    text-align: center;
+    color: #aaa;
+}
+
+.foto-placeholder span {
+    font-size: 35px;
+}
+
+.foto-placeholder strong {
+    color: white;
+}
+
+.foto-placeholder p,
+.foto-placeholder small {
+    margin: 0;
+}
+
+.foto-preview {
+    width: 100%;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.foto-preview img {
+    width: 180px;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #444;
+}
+
+.foto-preview p {
+    margin: 0;
+    font-size: 13px;
+    color: #aaa;
+}
+
+.btn-remover-foto {
+    margin-top: 10px;
+    align-self: flex-start;
+    padding: 8px 14px;
+    border: none;
+    border-radius: 5px;
+    background-color: #555;
+    color: white;
+    cursor: pointer;
+}
+
+.btn-remover-foto:hover {
+    background-color: #ca0101;
+}

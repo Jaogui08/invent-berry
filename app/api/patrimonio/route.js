@@ -20,7 +20,6 @@ export async function POST(req) {
         const res = await service.cadastrar(
             body.nome,
             body.numeroPatrimonio,
-            body.status,
             body.foto
         );
 

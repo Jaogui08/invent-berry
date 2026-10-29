@@ -57,7 +57,7 @@ export function usePatrimonioForm() {
     const salvar = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        if (!nome || !numeroPatrimonio || !status) {
+        if (!nome || !numeroPatrimonio) {
             Swal.fire({
                 title: 'Atenção!',
                 text: 'Preencha os campos obrigatórios.',
@@ -70,25 +70,44 @@ export function usePatrimonioForm() {
             return;
         }
 
-        setSalvando(true);
-        
-        try {
-            const dados = {
-                nome,
-                numeroPatrimonio,
-                status,
-                foto: foto || null
-            };
+        if (editandoId !== null && !status) {
+            await Swal.fire({
+                title: 'Atenção!',
+                text: 'Selecione o status do patrimônio.',
+                icon: 'warning',
+                confirmButtonColor: '#ca0101',
+                color: '#e6e6e6',
+                background: '#211d1d',
+            });
 
-            if (editandoId) {
+            return;
+        }
+
+        setSalvando(true);
+
+        try {
+            if (editandoId !== null) {
+                const dados = {
+                    nome,
+                    numeroPatrimonio,
+                    status,
+                    foto: foto || null
+                };
+
                 await api.put(`/patrimonio/${editandoId}`, dados);
             } else {
-                await api.post('/patrimonio', dados);
+                const dados = {
+                    nome,
+                    numeroPatrimonio,
+                    foto: foto || null
+                };
+
+                await api.post(`/patrimonio`, dados);
             }
 
             await Swal.fire({
                 title: 'Sucesso!',
-                text: editandoId
+                text: editandoId !== null
                     ? 'Patrimônio atualizado com sucesso!'
                     : 'Patrimônio cadastrado com sucesso!',
                 icon: 'success',
