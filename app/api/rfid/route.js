@@ -39,13 +39,24 @@ export async function POST(req) {
 
     } catch (e) {
 
+        if (e.codigo === "TAG_DESCONHECIDA") {
+
+            return NextResponse.json(
+                {
+                    erro: "TAG_DESCONHECIDA",
+                    mensagem:
+                        "Esta tag não está associada a nenhum patrimônio.",
+                    numeroPatrimonio:
+                        e.numeroPatrimonio
+                },
+                {
+                    status: 404
+                }
+            );
+        }
+
         return NextResponse.json(
-            {
-                erro: e.message
-            },
-            {
-                status: 400
-            }
+            { erro: e.message }, { status: 400 }
         );
     }
 }

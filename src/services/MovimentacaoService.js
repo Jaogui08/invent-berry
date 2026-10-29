@@ -112,10 +112,14 @@ export class MovimentacaoService {
                     numeroPatrimonio
                 );
 
-        if (!patrimonio)
-            throw new Error(
-                "Patrimônio não encontrado"
-            );
+        if (!patrimonio) {
+            const erro = new Error("Tag não cadastrada");
+
+            erro.codigo = "TAG_DESCONHECIDA";
+            erro.numeroPatrimonio = numeroPatrimonio;
+
+            throw erro;
+        }
 
         const sala =
             await this.salaRepository

@@ -83,6 +83,28 @@ def on_message(client, userdata, msg):
                 f"{movimentacao['salaId']}"
             )
 
+        elif resposta.status_code == 404:
+
+            erro = resposta.json()
+
+            if erro.get("erro") == "TAG_DESCONHECIDA":
+
+                print(
+                    f"⚠️ Tag não cadastrada: "
+                    f"{numero_patrimonio}"
+                )
+
+                print(
+                    "Nenhuma movimentação foi registrada"
+                )
+
+            else:
+
+                print(
+                    f"❌ InventBerry: "
+                    f"{erro.get('mensagem')}"
+                )
+
         else:
 
             erro = resposta.json()

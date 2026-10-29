@@ -11,16 +11,34 @@ export function useMovimentacoes() {
     const buscarMovimentacoes = async () => {
         try {
             const resposta = await api.get('/movimentacao');
+
             setMovimentacoes(resposta.data);
+
         } catch (error) {
-            console.error('Erro ao buscar movimentações:', error);
+
+            console.error(
+                'Erro ao buscar movimentações:',
+                error
+            );
+
         } finally {
+
             setCarregando(false);
         }
     };
 
     useEffect(() => {
+
         buscarMovimentacoes();
+
+        const intervalo = setInterval(() => {
+            buscarMovimentacoes();
+        }, 1000);
+
+        return () => {
+            clearInterval(intervalo);
+        };
+
     }, []);
 
     return {
