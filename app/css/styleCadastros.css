@@ -168,3 +168,45 @@
 .btn-remover-foto:hover {
     background-color: #ca0101;
 }
+
+.campo-rfid {
+    display: flex;
+    gap: 10px;
+}
+
+.campo-rfid input {
+    flex: 1;
+}
+
+.btn-ler-rfid,
+.btn-cancelar-rfid {
+    padding: 0 18px;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.btn-ler-rfid {
+    background-color: #ca0101;
+}
+
+.btn-ler-rfid:hover {
+    background-color: #a00000;
+}
+
+.btn-cancelar-rfid {
+    background-color: #555;
+}
+
+.btn-cancelar-rfid:hover {
+    background-color: #444;
+}
+
+.aguardando-rfid {
+    margin-top: 8px;
+    color: #f59e0b;
+    font-weight: bold;
+}

@@ -4,6 +4,7 @@ import NavbarAdmin from '@/app/components/NavBarAdmin';
 import { usePatrimonioForm } from '@/app/hooks/usePatrimonioForm';
 import '@/app/css/styleCadastros.css';
 import Swal from 'sweetalert2';
+import { useEffect, useState } from 'react';
 
 export default function CadastroPatrimonio() {
 
@@ -22,6 +23,61 @@ export default function CadastroPatrimonio() {
         cancelar,
         salvando
     } = usePatrimonioForm();
+
+    const [
+        aguardandoTag,
+        setAguardandoTag
+    ] = useState(false);
+
+    const iniciarLeituraTag = async () => {
+
+        try {
+
+            const resposta = await fetch(
+                '/api/rfid/captura',
+                {
+                    method: 'POST',
+
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+
+                    body: JSON.stringify({
+                        acao: 'iniciar'
+                    })
+                }
+            );
+
+            if (!resposta.ok) {
+                throw new Error();
+            }
+
+            setAguardandoTag(true);
+
+        } catch {
+
+            Swal.fire({
+                title: 'Erro!',
+                text: 'Não foi possível iniciar a leitura RFID.',
+                icon: 'error',
+                confirmButtonColor: '#ca0101',
+                color: '#e6e6e6',
+                background: '#211d1d'
+            });
+        }
+    };
+
+    const cancelarLeituraTag = async () => {
+
+        await fetch(
+            '/api/rfid/captura',
+            {
+                method: 'DELETE'
+            }
+        );
+
+        setAguardandoTag(false);
+    };
 
     const processarFoto = (arquivo: File) => {
 
@@ -98,6 +154,75 @@ export default function CadastroPatrimonio() {
         }
     };
 
+    useEffect(() => {
+
+        const verificarCaptura = async () => {
+
+            try {
+
+                const resposta = await fetch(
+                    '/api/rfid/captura'
+                );
+
+                if (!resposta.ok) {
+                    return;
+                }
+
+                const dados =
+                    await resposta.json();
+                    
+                setAguardandoTag(
+                    dados.ativo
+                );
+
+                if (
+                    dados.numeroPatrimonio
+                ) {
+
+                    setNumeroPatrimonio(
+                        dados.numeroPatrimonio
+                    );
+
+                    setAguardandoTag(false);
+
+                    await fetch(
+                        '/api/rfid/captura',
+                        {
+                            method: 'DELETE'
+                        }
+                    );
+
+                    await Swal.fire({
+                        title: 'Tag identificada!',
+                        text: `Número: ${dados.numeroPatrimonio}`,
+                        icon: 'success',
+                        confirmButtonColor: '#ca0101',
+                        color: '#e6e6e6',
+                        background: '#211d1d'
+                    });
+                }
+
+            } catch (error) {
+
+                console.error(
+                    'Erro ao verificar captura RFID:',
+                    error
+                );
+            }
+        };
+
+        verificarCaptura();
+
+        const intervalo = setInterval(
+            verificarCaptura,
+            500
+        );
+
+        return () =>
+            clearInterval(intervalo);
+
+    }, [setNumeroPatrimonio]);
+
     if (carregando) {
         return (
             <main className="cadastro-page">
@@ -151,16 +276,60 @@ export default function CadastroPatrimonio() {
                             Número do patrimônio
                         </label>
 
-                        <input
-                            type="text"
-                            value={numeroPatrimonio}
-                            onChange={(e) =>
-                                setNumeroPatrimonio(
-                                    e.target.value
+
+                        <div className="campo-rfid">
+
+                            <input
+                                type="text"
+                                value={numeroPatrimonio}
+
+                                onChange={(e) =>
+                                    setNumeroPatrimonio(
+                                        e.target.value
+                                    )
+                                }
+
+                                placeholder={
+                                    aguardandoTag
+                                        ? 'Aguardando tag RFID...'
+                                        : 'Digite ou leia o número do patrimônio'
+                                }
+                            />
+
+                            {!editandoId && (
+
+                                aguardandoTag ? (
+
+                                    <button
+                                        type="button"
+                                        className="btn-cancelar-rfid"
+                                        onClick={
+                                            cancelarLeituraTag
+                                        }
+                                    >
+                                        Cancelar leitura
+                                    </button>
+
+                                ) : (
+
+                                    <button
+                                        type="button"
+                                        className="btn-ler-rfid"
+                                        onClick={
+                                            iniciarLeituraTag
+                                        }
+                                    >
+                                        Ler tag RFID
+                                    </button>
                                 )
-                            }
-                            placeholder="Digite o número do patrimônio"
-                        />
+                            )}
+                        </div>
+
+                        {aguardandoTag && (
+                            <small className="aguardando-rfid">
+                                Aproxime uma tag do leitor...
+                            </small>
+                        )}
 
                     </div>
 

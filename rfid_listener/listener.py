@@ -7,8 +7,12 @@ MQTT_TOPIC = "RaspRFID/data"
 
 API_URL = "http://localhost:3000/api/rfid"
 
-LEITOR_ID = "LEITOR_01"
+CAPTURE_URL = (
+    "http://localhost:3000"
+    "/api/rfid/captura"
+)
 
+LEITOR_ID = "LEITOR_01"
 
 def on_connect(
     client,
@@ -34,7 +38,6 @@ def on_connect(
             f"Código: {reason_code}"
         )
 
-
 def on_message(client, userdata, msg):
 
     try:
@@ -46,14 +49,61 @@ def on_message(client, userdata, msg):
         )
 
         print("================================")
+
         print(
             f"🏷️ Tag recebida: "
             f"{numero_patrimonio}"
         )
 
+        captura_status = requests.get(
+            CAPTURE_URL,
+            timeout=2
+        )
+
+        if captura_status.ok:
+
+            captura_dados = (
+                captura_status.json()
+            )
+
+            if captura_dados.get("ativo"):
+
+                resposta_captura = requests.post(
+                    CAPTURE_URL,
+
+                    json={
+                        "acao": "capturar",
+
+                        "numeroPatrimonio":
+                            numero_patrimonio
+                    },
+
+                    timeout=5
+                )
+
+                if resposta_captura.ok:
+
+                    print(
+                        "📋 Tag enviada para "
+                        "o cadastro de patrimônio."
+                    )
+
+                    print(
+                        "Nenhuma movimentação "
+                        "foi registrada."
+                    )
+
+                    print(
+                        "================================\n"
+                    )
+
+                    return
+
         dados = {
+
             "numeroPatrimonio":
                 numero_patrimonio,
+
             "leitorId":
                 LEITOR_ID
         }
@@ -87,7 +137,10 @@ def on_message(client, userdata, msg):
 
             erro = resposta.json()
 
-            if erro.get("erro") == "TAG_DESCONHECIDA":
+            if (
+                erro.get("erro")
+                == "TAG_DESCONHECIDA"
+            ):
 
                 print(
                     f"⚠️ Tag não cadastrada: "
@@ -95,7 +148,8 @@ def on_message(client, userdata, msg):
                 )
 
                 print(
-                    "Nenhuma movimentação foi registrada"
+                    "Nenhuma movimentação "
+                    "foi registrada."
                 )
 
             else:
@@ -114,7 +168,9 @@ def on_message(client, userdata, msg):
                 f"{erro.get('erro')}"
             )
 
-        print("================================\n")
+        print(
+            "================================\n"
+        )
 
     except requests.RequestException as erro:
 
@@ -130,7 +186,6 @@ def on_message(client, userdata, msg):
             f"{erro}"
         )
 
-
 client = mqtt.Client(
     mqtt.CallbackAPIVersion.VERSION2
 )
@@ -138,7 +193,9 @@ client = mqtt.Client(
 client.on_connect = on_connect
 client.on_message = on_message
 
-print("🔌 Tentando conectar ao MQTT Broker...")
+print(
+    "🔌 Tentando conectar ao MQTT Broker..."
+)
 
 try:
 
@@ -152,7 +209,9 @@ try:
 
 except KeyboardInterrupt:
 
-    print("\n🛑 Listener encerrado.")
+    print(
+        "\n🛑 Listener encerrado."
+    )
 
 except Exception as erro:
 
