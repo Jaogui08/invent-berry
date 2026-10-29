@@ -34,12 +34,25 @@ export async function PUT(req, { params }) {
 
 export async function DELETE(req, { params }) {
     try {
+
         const { id } = await params;
 
         const res = await service.excluir(id);
 
         return NextResponse.json(res, { status: 200 });
+
     } catch (e) {
-        return NextResponse.json({ erro: e.message }, { status: 400 });
+
+        if (e.codigo === "SALA_EM_USO" ||
+            e.codigo === "SALA_COM_HISTORICO") {
+
+            return NextResponse.json(
+                { erro: e.message }, { status: 409 }
+            );
+        }
+
+        return NextResponse.json(
+            { erro: e.message }, { status: 400 }
+        );
     }
 }

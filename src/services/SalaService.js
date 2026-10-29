@@ -12,9 +12,7 @@ export class SalaService {
         if (leitorId) {
 
             const leitorExistente =
-                await this.repository.buscarPorLeitorId(
-                    leitorId
-                );
+                await this.repository.buscarPorLeitorId(leitorId);
 
             if (leitorExistente) {
                 throw new Error(
@@ -49,9 +47,7 @@ export class SalaService {
             throw new Error("O nome da sala é obrigatório");
 
         const leitorExistente =
-            await this.repository.buscarPorLeitorId(
-                leitorId
-            );
+            await this.repository.buscarPorLeitorId(leitorId);
 
         if (
             leitorExistente &&
@@ -70,8 +66,38 @@ export class SalaService {
     }
 
     async excluir(id) {
+
         await this.buscarPorId(id);
 
-        return await this.repository.excluir(id);
+        const possuiPatrimonios = await this.repository.possuiPatrimonios(id);
+
+        if (possuiPatrimonios) {
+
+            const erro = new Error(
+                "Esta sala possui patrimônios vinculados. " +
+                "Retire os patrimônios da sala antes de excluí-la."
+            );
+
+            erro.codigo = "SALA_EM_USO";
+
+            throw erro;
+        }
+
+        const possuiMovimentacoes = await this.repository.possuiMovimentacoes(id);
+
+        if (possuiMovimentacoes) {
+
+            const erro = new Error(
+                "Esta sala possui movimentações registradas " +
+                "e não pode ser excluída."
+            );
+
+            erro.codigo = "SALA_COM_HISTORICO";
+
+            throw erro;
+        }
+
+        return await this.repository
+            .excluir(id);
     }
 }

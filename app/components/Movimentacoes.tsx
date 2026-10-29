@@ -7,7 +7,8 @@ import '../css/styleDashboard.css'
 export default function Movimentacoes() {
     const { movimentacoes, carregando } = useMovimentacoes();
     const [pagina, setPagina] = useState(1);
-    const itensPorPagina = 5;
+    
+    const itensPorPagina = 10;
 
     const totalPaginas = Math.ceil(
         movimentacoes.length / itensPorPagina

@@ -73,4 +73,28 @@ export class SalaRepository {
             dados.id
         );
     }
+
+    async possuiPatrimonios(id) {
+
+        const quantidade =
+            await prisma.patrimonio.count({
+                where: {
+                    salaId: Number(id)
+                }
+            });
+
+        return quantidade > 0;
+    }
+
+    async possuiMovimentacoes(id) {
+
+        const quantidade =
+            await prisma.movimentacao.count({
+                where: {
+                    salaId: Number(id)
+                }
+            });
+
+        return quantidade > 0;
+    }
 }

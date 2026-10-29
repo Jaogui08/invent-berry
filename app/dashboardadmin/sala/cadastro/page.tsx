@@ -2,7 +2,6 @@
 
 import NavbarAdmin from '@/app/components/NavBarAdmin';
 import { useSalasForm } from '@/app/hooks/useSalasForm';
-
 import '@/app/css/styleCadastros.css';
 
 export default function CadastroSala() {
@@ -12,40 +11,79 @@ export default function CadastroSala() {
         setNome,
         leitorId,
         setLeitorId,
+        editandoId,
+        carregando,
         salvar,
         cancelar,
         salvando
     } = useSalasForm();
 
+    if (carregando) {
+
+        return (
+
+            <main className="cadastro-page">
+
+                <NavbarAdmin />
+
+                <section className="form-container">
+
+                    <p>
+                        Carregando sala...
+                    </p>
+
+                </section>
+            </main>
+        );
+    }
+
     return (
+
         <main className="cadastro-page">
 
             <NavbarAdmin />
 
             <section className="form-container">
 
-                <h1>Cadastrar Sala</h1>
+                <h1>
+
+                    {editandoId !== null
+                        ? 'Editar sala'
+                        : 'Cadastrar sala'
+                    }
+
+                </h1>
 
                 <form onSubmit={salvar}>
 
                     <div className="campo">
-                        <label>Nome da sala</label>
+
+                        <label>
+                            Nome da sala
+                        </label>
+
                         <input
                             type="text"
                             value={nome}
-                            onChange={(e) => setNome(e.target.value)}
+                            onChange={(e) =>setNome(e.target.value)}
                             placeholder="Digite o nome da sala"
                         />
+
                     </div>
 
                     <div className="campo">
-                        <label>ID do leitor</label>
+
+                        <label>
+                            ID do leitor
+                        </label>
+
                         <input
                             type="text"
                             value={leitorId}
                             onChange={(e) => setLeitorId(e.target.value)}
-                            placeholder="Digite o ID do leitor"
+                            placeholder="Ex: LEITOR_01"
                         />
+
                     </div>
 
                     <div className="botoes">
@@ -63,15 +101,16 @@ export default function CadastroSala() {
                             className="btn-salvar"
                             disabled={salvando}
                         >
-                            {salvando ? 'Salvando...' : 'Salvar'}
+                            {salvando
+                                ? 'Salvando...'
+                                : editandoId !== null
+                                    ? 'Atualizar'
+                                    : 'Cadastrar'
+                            }
                         </button>
-
                     </div>
-
                 </form>
-
             </section>
-
         </main>
     );
 }

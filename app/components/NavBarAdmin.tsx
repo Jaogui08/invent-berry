@@ -36,11 +36,11 @@ export default function NavBarAdmin() {
                 <img src="/logo-sesi.png"/>
             </div>
             <div className="acoes">
-                <Link href="/dashboardadmin/sala/cadastro">Cadastrar Sala</Link>
                 <Link href="/dashboardadmin/patrimonio/cadastro">Cadastrar Patrimônio</Link>
                 {/* <Link href="/dashboardadmin/movimentacao/cadastro">Cadastrar Movimentação</Link> */}
                 <Link href="/dashboardadmin">Movimentações</Link>
                 <Link href="/dashboardadmin/patrimonio">Patrimônios</Link>
+                <Link href="/dashboardadmin/sala">Salas</Link>
                 <Link href="/perfil">Perfil</Link>
                 <button onClick={sair}>Sair</button>
             </div>

@@ -67,7 +67,7 @@ export default function PatrimoniosAdmin() {
                                 <div>Nome</div>
                                 <div>Nº Patrimônio</div>
                                 <div>Status</div>
-                                <div>Ações</div>
+                                <div style={{display: "flex", justifyContent: "center", marginRight: 10}}>Ações</div>
 
                             </div>
 
