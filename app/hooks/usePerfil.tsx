@@ -29,48 +29,48 @@ export function usePerfil() {
     const carregarPerfil =
         async () => {
 
-        try {
+            try {
 
-            const usuarioSalvo = localStorage.getItem('usuario');
+                const usuarioSalvo = localStorage.getItem('usuario');
 
-            if (!usuarioSalvo) {
-                router.replace('/');
-                return;
-            }
+                if (!usuarioSalvo) {
+                    router.replace('/');
+                    return;
+                }
 
-            const usuario = JSON.parse(usuarioSalvo);
+                const usuario = JSON.parse(usuarioSalvo);
 
-            setUsuarioId(usuario.id);
-            setTipo(usuario.tipo);
+                setUsuarioId(usuario.id);
+                setTipo(usuario.tipo);
 
-            const resposta = await api.get(`/perfil/${usuario.id}`);
+                const resposta = await api.get(`/perfil/${usuario.id}`);
 
-            setNome(resposta.data.nome);
-            setNomeOriginal(resposta.data.nome);
-            setEmail(resposta.data.email);
+                setNome(resposta.data.nome);
+                setNomeOriginal(resposta.data.nome);
+                setEmail(resposta.data.email);
 
-            const fotoRecebida = resposta.data.foto || '';
+                const fotoRecebida = resposta.data.foto || '';
 
-            setFoto(fotoRecebida);
-            setFotoOriginal(fotoRecebida);
+                setFoto(fotoRecebida);
+                setFotoOriginal(fotoRecebida);
 
-        } catch (error: any) {
+            } catch (error: any) {
 
-            Swal.fire({
-                title: 'Erro!',
-                text: error.response
+                Swal.fire({
+                    title: 'Erro!',
+                    text: error.response
                         ?.data?.erro ||
                         'Não foi possível carregar o perfil.',
-                icon: 'error',
-                color: '#e6e6e6',
-                confirmButtonColor: '#ca0101',
-                background: '#211d1d'
-            });
+                    icon: 'error',
+                    color: '#e6e6e6',
+                    confirmButtonColor: '#ca0101',
+                    background: '#211d1d'
+                });
 
-        } finally {
-            setCarregando(false);
-        }
-    };
+            } finally {
+                setCarregando(false);
+            }
+        };
 
     const salvar = async (e: React.FormEvent) => {
 
@@ -132,6 +132,14 @@ export function usePerfil() {
             setNovaSenha('');
             setConfirmarSenha('');
 
+            window.dispatchEvent(
+                new CustomEvent("fotoPerfilAtualizada", {
+                    detail: {
+                        foto: novaFoto || null
+                    }
+                })
+            );
+
             await Swal.fire({
                 title: 'Sucesso!',
                 text: 'Perfil atualizado com sucesso.',
@@ -146,8 +154,8 @@ export function usePerfil() {
             Swal.fire({
                 title: 'Erro!',
                 text: error.response
-                        ?.data?.erro ||
-                        'Não foi possível atualizar o perfil.',
+                    ?.data?.erro ||
+                    'Não foi possível atualizar o perfil.',
                 icon: 'error',
                 color: '#e6e6e6',
                 confirmButtonColor: '#ca0101',

@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import "../css/styleNavbar.css"
 import Swal from "sweetalert2";
 import Link from "next/link";
+import PerfilNavLink from "./PerfilNavLink";
 
 export default function NavBarAdmin() {
     const router = useRouter();
@@ -41,8 +42,11 @@ export default function NavBarAdmin() {
                 <Link href="/dashboardadmin">Movimentações</Link>
                 <Link href="/dashboardadmin/patrimonio">Patrimônios</Link>
                 <Link href="/dashboardadmin/sala">Salas</Link>
-                <Link href="/perfil">Perfil</Link>
-                <button onClick={sair}>Sair</button>
+                <PerfilNavLink/>
+                <button onClick={sair} style={{display: "flex", alignItems: "center", gap: 8}}>
+                    Sair 
+                    <img src="/logout.png" width={28} height={28} />
+                </button>
             </div>
         </nav>
     )
