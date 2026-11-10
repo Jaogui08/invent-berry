@@ -24,10 +24,78 @@
     margin-bottom: 30px;
 }
 
+.perfil-foto-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.perfil-foto-upload {
+    width: 150px;
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px dashed #555;
+    border-radius: 50%;
+    background-color: #111;
+    overflow: hidden;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.perfil-foto-upload:hover {
+    border-color: #ca0101;
+    transform: scale(1.02);
+}
+
+.perfil-foto-upload img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.perfil-foto-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    color: #aaa;
+}
+
+.perfil-foto-placeholder span {
+    font-size: 38px;
+}
+
+.perfil-foto-placeholder small {
+    font-size: 12px;
+}
+
+.perfil-foto-texto {
+    margin-top: 10px;
+    margin-bottom: 0;
+    color: #aaa;
+    font-size: 13px;
+}
+
+.perfil-container
+.btn-remover-foto-perfil {
+    width: auto;
+    padding: 8px 14px;
+    margin-top: 10px;
+    background-color: #555;
+    font-size: 13px;
+}
+
+.perfil-container
+.btn-remover-foto-perfil:hover {
+    background-color: #ca0101;
+}
+
 .perfil-campo {
     display: flex;
     flex-direction: column;
-
     margin-bottom: 20px;
 }
 
@@ -38,15 +106,11 @@
 
 .perfil-campo input {
     min-height: 44px;
-
     padding: 12px;
-
     border: 1px solid #555;
     border-radius: 5px;
-
     background-color: #111;
     color: white;
-
     outline: none;
 }
 
@@ -57,25 +121,18 @@
 .perfil-campo input:disabled {
     background-color: #292929;
     color: #999;
-
     cursor: not-allowed;
 }
 
 .perfil-container button {
     width: 100%;
-
     padding: 12px;
-
     margin-top: 10px;
-
     border: none;
     border-radius: 5px;
-
     background-color: #ca0101;
     color: white;
-
     font-weight: bold;
-
     cursor: pointer;
 }
 

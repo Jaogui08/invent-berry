@@ -7,48 +7,64 @@ const service = new UsuarioService(
 );
 
 export async function GET(req, { params }) {
+
     try {
-        const { id } = await params;
+
+        const { id } =
+            await params;
 
         const usuario = await service.buscarPorId(id);
 
-        return NextResponse.json({
-            id: usuario.id,
-            nome: usuario.nome,
-            email: usuario.email,
-            tipo: usuario.tipo
-        }, { status: 200 });
+        return NextResponse.json(
+            {
+                id: usuario.id,
+                nome: usuario.nome,
+                email: usuario.email,
+                tipo: usuario.tipo,
+                foto: usuario.foto
+            }, { status: 200 }
+        );
 
     } catch (e) {
+
         return NextResponse.json(
-            { erro: e.message },
-            { status: 404 }
+            { erro: e.message }, { status: 404 }
         );
     }
 }
 
-export async function PUT(req, { params }) {
-    try {
-        const { id } = await params;
-        const body = await req.json();
+export async function PUT(req,{ params }) {
 
-        const usuario = await service.atualizarPerfil(
-            id,
-            body.nome,
-            body.novaSenha
+    try {
+
+        const { id } =
+            await params;
+
+        const body =
+            await req.json();
+
+        const usuario =
+            await service.atualizarPerfil(
+                id,
+                body.nome,
+                body.novaSenha,
+                body.foto
+            );
+
+        return NextResponse.json(
+            {
+                id: usuario.id,
+                nome: usuario.nome,
+                email: usuario.email,
+                tipo: usuario.tipo,
+                foto: usuario.foto
+            }, { status: 200 }
         );
 
-        return NextResponse.json({
-            id: usuario.id,
-            nome: usuario.nome,
-            email: usuario.email,
-            tipo: usuario.tipo
-        }, { status: 200 });
-
     } catch (e) {
+
         return NextResponse.json(
-            { erro: e.message },
-            { status: 400 }
+            { erro: e.message }, { status: 400 }
         );
     }
 }

@@ -6,12 +6,14 @@ import api from '@/app/lib/api';
 import Swal from 'sweetalert2';
 
 export function usePerfil() {
-    const router = useRouter();
 
+    const router = useRouter();
     const [usuarioId, setUsuarioId] = useState<number | null>(null);
     const [nome, setNome] = useState('');
     const [nomeOriginal, setNomeOriginal] = useState('');
     const [email, setEmail] = useState('');
+    const [foto, setFoto] = useState('');
+    const [fotoOriginal, setFotoOriginal] = useState('');
     const [novaSenha, setNovaSenha] = useState('');
     const [confirmarSenha, setConfirmarSenha] = useState('');
     const [tipo, setTipo] = useState('');
@@ -19,11 +21,16 @@ export function usePerfil() {
     const [salvando, setSalvando] = useState(false);
 
     useEffect(() => {
+
         carregarPerfil();
+
     }, []);
 
-    const carregarPerfil = async () => {
+    const carregarPerfil =
+        async () => {
+
         try {
+
             const usuarioSalvo = localStorage.getItem('usuario');
 
             if (!usuarioSalvo) {
@@ -36,21 +43,24 @@ export function usePerfil() {
             setUsuarioId(usuario.id);
             setTipo(usuario.tipo);
 
-            const resposta = await api.get(
-                `/perfil/${usuario.id}`
-            );
+            const resposta = await api.get(`/perfil/${usuario.id}`);
 
             setNome(resposta.data.nome);
             setNomeOriginal(resposta.data.nome);
             setEmail(resposta.data.email);
 
+            const fotoRecebida = resposta.data.foto || '';
+
+            setFoto(fotoRecebida);
+            setFotoOriginal(fotoRecebida);
+
         } catch (error: any) {
 
             Swal.fire({
                 title: 'Erro!',
-                text:
-                    error.response?.data?.erro ||
-                    'Não foi possível carregar o perfil.',
+                text: error.response
+                        ?.data?.erro ||
+                        'Não foi possível carregar o perfil.',
                 icon: 'error',
                 color: '#e6e6e6',
                 confirmButtonColor: '#ca0101',
@@ -63,12 +73,14 @@ export function usePerfil() {
     };
 
     const salvar = async (e: React.FormEvent) => {
+
         e.preventDefault();
 
         if (!usuarioId)
             return;
 
         if (novaSenha !== confirmarSenha) {
+
             Swal.fire({
                 title: 'Erro!',
                 text: 'As senhas não coincidem.',
@@ -85,28 +97,42 @@ export function usePerfil() {
 
         try {
 
-            const resposta = await api.put(
-                `/perfil/${usuarioId}`,
-                {
-                    nome,
-                    novaSenha
-                }
-            );
+            const resposta =
+                await api.put(
+                    `/perfil/${usuarioId}`,
+
+                    {
+                        nome,
+                        novaSenha,
+                        foto: foto || null
+                    }
+                );
 
             const usuarioAtualizado = resposta.data;
 
             localStorage.setItem(
                 'usuario',
-                JSON.stringify(usuarioAtualizado)
+
+                JSON.stringify({
+                    id: usuarioAtualizado.id,
+                    nome: usuarioAtualizado.nome,
+                    email: usuarioAtualizado.email,
+                    tipo: usuarioAtualizado.tipo
+                })
             );
 
             setNome(usuarioAtualizado.nome);
             setNomeOriginal(usuarioAtualizado.nome);
             setEmail(usuarioAtualizado.email);
+
+            const novaFoto = usuarioAtualizado.foto || '';
+
+            setFoto(novaFoto);
+            setFotoOriginal(novaFoto);
             setNovaSenha('');
             setConfirmarSenha('');
 
-            Swal.fire({
+            await Swal.fire({
                 title: 'Sucesso!',
                 text: 'Perfil atualizado com sucesso.',
                 icon: 'success',
@@ -115,15 +141,13 @@ export function usePerfil() {
                 background: '#211d1d'
             });
 
-            
-
         } catch (error: any) {
 
             Swal.fire({
                 title: 'Erro!',
-                text:
-                    error.response?.data?.erro ||
-                    'Não foi possível atualizar o perfil.',
+                text: error.response
+                        ?.data?.erro ||
+                        'Não foi possível atualizar o perfil.',
                 icon: 'error',
                 color: '#e6e6e6',
                 confirmButtonColor: '#ca0101',
@@ -135,16 +159,22 @@ export function usePerfil() {
         }
     };
 
-    const senhasIguais = novaSenha === confirmarSenha;
+    const senhasIguais =
+        novaSenha ===
+        confirmarSenha;
 
     const possuiAlteracoes =
+
         nome !== nomeOriginal ||
+        foto !== fotoOriginal ||
         novaSenha.length > 0;
 
     return {
         nome,
         setNome,
         email,
+        foto,
+        setFoto,
         novaSenha,
         setNovaSenha,
         confirmarSenha,

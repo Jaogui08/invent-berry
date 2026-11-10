@@ -13,6 +13,7 @@ model usuario {
     email String @unique @db.VarChar(255)
     senha String @db.VarChar(255)
     tipo String @db.VarChar(50)
+    foto String? @db.LongText
 }
 
 model sala {
