@@ -1,7 +1,7 @@
 import paho.mqtt.client as mqtt
 import requests
 
-MQTT_BROKER = "10.121.138.156"
+MQTT_BROKER = "10.42.0.1"
 MQTT_PORT = 1883
 MQTT_TOPIC = "RaspRFID/data"
 
