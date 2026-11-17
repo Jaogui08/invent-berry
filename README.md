@@ -25,12 +25,10 @@ A comunicação entre o leitor e a aplicação utiliza a seguinte estrutura:
 
 1. Uma tag RFID é aproximada do leitor conectado ao Raspberry Pi.
 2. O Raspberry Pi publica o identificador da tag no broker MQTT.
-3. Um listener em Python, localizado em `rfid_listener/listener.py`, recebe a mensagem.
-4. O listener envia o número do patrimônio e o identificador do leitor para a rota `/api/rfid`.
+3. Um listener em Python recebe a mensagem.
+4. O listener envia o número do patrimônio e o identificador do leitor.
 5. A aplicação identifica o patrimônio e a sala associada ao leitor, registra a movimentação e atualiza a localização do item.
 6. O dashboard apresenta as informações atualizadas.
-
-O número gravado na tag deve corresponder ao campo **Número do patrimônio** cadastrado no InventBerry. Tags desconhecidas não geram movimentações.
 
 ## Tecnologias utilizadas
 
